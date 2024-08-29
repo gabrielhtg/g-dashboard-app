@@ -25,6 +25,10 @@ export class LoginComponent{
 
     this.http.post<any>(`${apiUrl}/auth/login`, formLogin.value).subscribe({
       next: value => {
+        sessionStorage.setItem('name', value.data.nama)
+        sessionStorage.setItem('profile_picture', value.data.profile_picture)
+        sessionStorage.setItem('email', value.data.email)
+        sessionStorage.setItem('username', value.data.username)
         this.router.navigate(['dashboard'])
       },
       error: err => {

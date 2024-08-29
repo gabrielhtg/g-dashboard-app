@@ -7,6 +7,11 @@ import {CreateAccountComponent} from "./create-account/create-account.component"
 import {LogActivityComponent} from "./log-activity/log-activity.component";
 import {AddCodeSnippetsComponent} from "./add-code-snippets/add-code-snippets.component";
 import {AddUsefulLinksComponent} from "./add-useful-links/add-useful-links.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {GOcrComponent} from "./g-ocr/g-ocr.component";
+import {GOcrBankComponent} from "./g-ocr-bank/g-ocr-bank.component";
+import {OcrBankPyComponent} from "./ocr-bank-py/ocr-bank-py.component";
+import {authGuard} from "./auth.guard";
 
 export const routes: Routes = [
   {
@@ -17,6 +22,7 @@ export const routes: Routes = [
     path: 'dashboard',
     component: MainDashboardComponent,
     title: 'Main Menu',
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -56,6 +62,26 @@ export const routes: Routes = [
         path: 'code-snippets/:keywords',
         component: CodeSnippetsComponent,
         title: 'Code Snippets'
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'Profile'
+      },
+      {
+        path: 'g-ocr',
+        component: GOcrComponent,
+        title: 'G-OCR'
+      },
+      {
+        path: 'g-ocr-bank',
+        component: GOcrBankComponent,
+        title: 'G-OCR Bank'
+      },
+      {
+        path: 'ocr-bank-py',
+        component: OcrBankPyComponent,
+        title: 'OCR Bank Pyhton'
       },
     ]
   },

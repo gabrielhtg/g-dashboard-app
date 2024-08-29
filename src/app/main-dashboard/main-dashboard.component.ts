@@ -13,8 +13,7 @@ import {RouterOutlet} from "@angular/router";
     TableLogActivityComponent,
     RouterOutlet
   ],
-  templateUrl: './main-dashboard.component.html',
-  styleUrl: './main-dashboard.component.css'
+  templateUrl: './main-dashboard.component.html'
 })
 export class MainDashboardComponent {
 

@@ -10,8 +10,7 @@ import {data} from "autoprefixer";
   imports: [
     TableLogActivityComponent
   ],
-  templateUrl: './log-activity.component.html',
-  styleUrl: './log-activity.component.css'
+  templateUrl: './log-activity.component.html'
 })
 export class LogActivityComponent implements OnInit{
   logActivityData : any
@@ -22,7 +21,7 @@ export class LogActivityComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.loadData(0, 10)
+    this.loadData(0, 12)
   }
 
   loadData(skip: number, take:number) {

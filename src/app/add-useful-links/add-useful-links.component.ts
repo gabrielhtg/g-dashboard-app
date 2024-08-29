@@ -3,16 +3,17 @@ import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {NgxTiptapModule} from "ngx-tiptap";
 import {apiUrl} from "../env";
 import {HttpClient} from "@angular/common/http";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-add-useful-links',
   standalone: true,
-    imports: [
-        FormsModule,
-        NgxTiptapModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    FormsModule,
+    NgxTiptapModule,
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './add-useful-links.component.html',
 })
 export class AddUsefulLinksComponent implements OnInit {
@@ -30,7 +31,7 @@ export class AddUsefulLinksComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.params['id']
 
-    if (this.id !== null) {
+    if (this.id) {
       this.loadData()
     }
   }

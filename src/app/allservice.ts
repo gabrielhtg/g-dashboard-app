@@ -29,6 +29,16 @@ export function showSuccessNotification (text: string) {
   });
 }
 
+export function showErrorNotification (text: string) {
+  Swal.fire({
+    position: "center",
+    icon: "error",
+    title: text,
+    showConfirmButton: false,
+    timer: 1000
+  });
+}
+
 export function showDeleteConfirmationDialog (
   text: string,
   http: HttpClient,
@@ -53,4 +63,20 @@ export function showDeleteConfirmationDialog (
       Swal.fire("Changes are not saved", "", "info");
     }
   });
+}
+
+export default function isProfilePictExist () {
+  return !!sessionStorage.getItem('profile_picture');
+}
+
+export function getUsername () : string | null {
+  return sessionStorage.getItem('username');
+}
+
+export function getName () : string | null {
+  return sessionStorage.getItem('name');
+}
+
+export function getEmail () : string | null {
+  return sessionStorage.getItem('email');
 }

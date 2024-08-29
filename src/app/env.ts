@@ -1,7 +1,5 @@
-export const apiUrl = 'http://192.168.1.7:3000'
-// export const apiUrl = 'http://192.168.1.47:3000'
-// export const apiUrl = 'http://192.168.1.12:4201'
-// export const apiUrl = 'http://localhost:3000'
+export const apiUrl = 'http://localhost:3000'
+export const apiUrlPy = 'http://localhost:5000'
 
 export function formatWaktu (date: string) {
   // Buat objek Date dari string input
@@ -20,7 +18,5 @@ export function formatWaktu (date: string) {
   const seconds = dateObj.getSeconds();
 
   // Format ulang sesuai kebutuhan
-  const formattedDate = `${day} ${month} ${year} - ${hours}:${minutes}`;
-
-  return formattedDate;
+  return `${day} ${month} ${year} - ${hours}:${minutes}`;
 }

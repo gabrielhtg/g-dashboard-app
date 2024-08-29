@@ -7,7 +7,7 @@ import {CodeBlock} from "@tiptap/extension-code-block";
 import {Image} from "@tiptap/extension-image";
 import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../env";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {showSuccessNotification} from "../allservice";
 
 @Component({
@@ -16,7 +16,8 @@ import {showSuccessNotification} from "../allservice";
   templateUrl: './add-code-snippets.component.html',
   imports: [
     NgxTiptapModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
 })
 export class AddCodeSnippetsComponent implements OnDestroy{
