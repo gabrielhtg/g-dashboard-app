@@ -73,6 +73,4 @@ export class CodeSnippetsComponent implements OnInit{
       this.router.navigate([`/dashboard/code-snippets/${formValue.keyword}`]).then();
     })
   }
-
-  protected readonly showCopyNotification = showCopyNotification;
 }

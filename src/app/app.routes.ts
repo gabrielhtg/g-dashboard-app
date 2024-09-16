@@ -12,6 +12,7 @@ import {GOcrComponent} from "./g-ocr/g-ocr.component";
 import {GOcrBankComponent} from "./g-ocr-bank/g-ocr-bank.component";
 import {OcrBankPyComponent} from "./ocr-bank-py/ocr-bank-py.component";
 import {authGuard} from "./auth.guard";
+import {OcrBankPyProcessedComponent} from "./ocr-bank-py-processed/ocr-bank-py-processed.component";
 
 export const routes: Routes = [
   {
@@ -81,7 +82,12 @@ export const routes: Routes = [
       {
         path: 'ocr-bank-py',
         component: OcrBankPyComponent,
-        title: 'OCR Bank Pyhton'
+        title: 'OCR Bank Python',
+      },
+      {
+        path: 'ocr-bank-py-processed',
+        component: OcrBankPyProcessedComponent,
+        title: 'OCR Bank Python'
       },
     ]
   },
