@@ -13,10 +13,12 @@ import {formatWaktu} from "../env";
 })
 export class OcrBankPyProcessedComponent implements OnInit{
   receivedData: any
+  receivedSubData:any
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.receivedData = navigation?.extras.state?.['data']; // Akses state data
+    this.receivedSubData = navigation?.extras.state?.['sub-data']; // Akses state data
   }
 
   ngOnInit(): void {
