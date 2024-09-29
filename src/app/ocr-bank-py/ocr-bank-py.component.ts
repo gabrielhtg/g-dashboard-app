@@ -1,10 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  HostListener,
-  Input,
-  OnInit,
-  ViewChild,
 } from '@angular/core';
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +8,6 @@ import { NgForOf, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import HSFileUpload from '@preline/file-upload';
 import { HSStaticMethods } from 'preline/preline';
-import { apiUrlPy } from '../env';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -24,12 +19,48 @@ import { Router } from '@angular/router';
 })
 export class OcrBankPyComponent implements AfterViewInit {
   element: HSFileUpload | any;
+  selectedBankStatement = ''
 
   constructor(private router: Router, private http: HttpClient) {}
 
   ngAfterViewInit() {
     HSFileUpload.autoInit();
     this.tampilkanPesanError();
+
+    /**
+     * ! Penting untuk diketahui
+     *
+     *  @var selectedBankStatement memiliki value antara lain sebagai berikut ini.
+     *      1 = bca corporate
+     *      2 = bca personal
+     *
+     *  on sending disini berarti ketika si dropzone disend
+     */
+
+    this.element.dropzone.on('sending', (file: any, xhr: any, formData: any) => {
+      console.log(this.selectedBankStatement)
+      console.log('mama aku dipanggil')
+      // formData.append('data', this.selectedBankStatement);
+    })
+
+    this.element.dropzone.on('success', (file: any, response: any) => {
+      Swal.close();
+
+      this.router
+        .navigate(['/dashboard/ocr-bank-py-processed'], {
+          state: response,
+        })
+        .then();
+    });
+
+    this.element.dropzone.on('error', (file: any, errorMessage: any) => {
+      // Menampilkan pesan error dengan SweetAlert
+      Swal.fire({
+        icon: 'error',
+        title: 'Upload Failed',
+        text: errorMessage.data, // Bisa disesuaikan dengan pesan yang lebih jelas
+      });
+    });
   }
 
   tampilkanPesanError() {
@@ -65,24 +96,5 @@ export class OcrBankPyComponent implements AfterViewInit {
     });
 
     this.element.dropzone.processQueue();
-
-    this.element.dropzone.on('success', (file: any, response: any) => {
-      Swal.close();
-
-      this.router
-        .navigate(['/dashboard/ocr-bank-py-processed'], {
-          state: response,
-        })
-        .then();
-    });
-
-    this.element.dropzone.on('error', (file: any, errorMessage: any) => {
-      // Menampilkan pesan error dengan SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Upload Failed',
-        text: errorMessage.data, // Bisa disesuaikan dengan pesan yang lebih jelas
-      });
-    });
   }
 }
