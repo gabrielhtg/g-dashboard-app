@@ -37,30 +37,71 @@ export class OcrBankPyComponent implements AfterViewInit {
      *  on sending disini berarti ketika si dropzone disend
      */
 
-    this.element.dropzone.on('sending', (file: any, xhr: any, formData: any) => {
-      console.log(this.selectedBankStatement)
-      console.log('mama aku dipanggil')
-      // formData.append('data', this.selectedBankStatement);
-    })
+    this.element.dropzone.on('sendingmultiple', (files: any) => {
+      const formData = new FormData();
 
-    this.element.dropzone.on('success', (file: any, response: any) => {
-      Swal.close();
-
-      this.router
-        .navigate(['/dashboard/ocr-bank-py-processed'], {
-          state: response,
-        })
-        .then();
-    });
-
-    this.element.dropzone.on('error', (file: any, errorMessage: any) => {
-      // Menampilkan pesan error dengan SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Upload Failed',
-        text: errorMessage.data, // Bisa disesuaikan dengan pesan yang lebih jelas
+      files.forEach((file: any, index: number) => {
+        formData.append('files', file, file.name);  // 'files' is the key for multiple files
       });
-    });
+
+      /*
+        ! Jenis-jenis tipe bank statement
+
+        1 = BCA Corporate
+        2 = BCA Personal
+       */
+      formData.append('bank-statement-type', this.selectedBankStatement);
+
+      this.http.post<any>('http://localhost:5000/proceed', formData).subscribe({
+        next: value => {
+          Swal.close();
+
+          this.router
+            .navigate(['/dashboard/ocr-bank-py-processed'], {
+              state: value,
+            })
+            .then();
+        },
+        error: err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: err.error.data, // Bisa disesuaikan dengan pesan yang lebih jelas
+          });
+        }
+      })
+
+      // this.http.get('assets/response_bca_personal.json').subscribe({
+      //   next: value => {
+      //     Swal.close();
+      //
+      //     this.router
+      //       .navigate(['/dashboard/ocr-bank-py-processed'], {
+      //         state: value,
+      //       })
+      //     .then();
+      //   }
+      // })
+
+      // this.http.post<any>('http://localhost:5000/proceed', formData).subscribe({
+      //   next: value => {
+      //       Swal.close();
+      //
+      //       this.router
+      //         .navigate(['/dashboard/ocr-bank-py-processed'], {
+      //           state: value,
+      //         })
+      //       .then();
+      //   },
+      //   error: err => {
+      //     Swal.fire({
+      //           icon: 'error',
+      //           title: 'Upload Failed',
+      //           text: err.error.data, // Bisa disesuaikan dengan pesan yang lebih jelas
+      //         });
+      //   }
+      // })
+    })
   }
 
   tampilkanPesanError() {
