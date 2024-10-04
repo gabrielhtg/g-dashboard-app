@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForOf } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
@@ -18,7 +24,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './ocr-bank-py-processed.component.html',
 })
 export class OcrBankPyProcessedComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+  @ViewChildren(BaseChartDirective) charts:
+    | QueryList<BaseChartDirective>
+    | undefined;
 
   // input form
   saldoAkhir: string = '';
@@ -111,6 +119,7 @@ export class OcrBankPyProcessedComponent implements OnInit {
     data[key] = newValue;
 
     this.barTotalDebitKreditData = {
+      ...this.barTotalDebitKreditData,
       labels: this.barTotalDebitKreditLabels,
       datasets: [
         {
@@ -123,6 +132,9 @@ export class OcrBankPyProcessedComponent implements OnInit {
         },
       ],
     };
-    this.chart?.update();
+
+    this.charts?.forEach((chart) => {
+      chart.update();
+    });
   }
 }
