@@ -1,7 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-} from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
@@ -10,6 +7,8 @@ import HSFileUpload from '@preline/file-upload';
 import { HSStaticMethods } from 'preline/preline';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { apiUrlPy } from '../env';
+import { catchError, throwError, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-ocr-bank-py',
@@ -19,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class OcrBankPyComponent implements AfterViewInit {
   element: HSFileUpload | any;
-  selectedBankStatement = ''
+  selectedBankStatement = '';
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -41,7 +40,7 @@ export class OcrBankPyComponent implements AfterViewInit {
       const formData = new FormData();
 
       files.forEach((file: any, index: number) => {
-        formData.append('files', file, file.name);  // 'files' is the key for multiple files
+        formData.append('files', file, file.name); // 'files' is the key for multiple files
       });
 
       /*
@@ -52,8 +51,8 @@ export class OcrBankPyComponent implements AfterViewInit {
        */
       formData.append('bank-statement-type', this.selectedBankStatement);
 
-      this.http.post<any>('http://localhost:5000/proceed', formData).subscribe({
-        next: value => {
+      this.http.post<any>(`${apiUrlPy}/proceed`, formData).subscribe({
+        next: (value) => {
           Swal.close();
 
           this.router
@@ -62,14 +61,14 @@ export class OcrBankPyComponent implements AfterViewInit {
             })
             .then();
         },
-        error: err => {
+        error: (err) => {
           Swal.fire({
             icon: 'error',
             title: 'Upload Failed',
             text: err.error.data, // Bisa disesuaikan dengan pesan yang lebih jelas
           });
-        }
-      })
+        },
+      });
 
       // this.http.get('assets/response_bca_personal.json').subscribe({
       //   next: value => {
@@ -101,7 +100,7 @@ export class OcrBankPyComponent implements AfterViewInit {
       //         });
       //   }
       // })
-    })
+    });
   }
 
   tampilkanPesanError() {
