@@ -20,6 +20,12 @@ export class OcrBankPyComponent implements AfterViewInit {
   element: HSFileUpload | any;
   selectedBankStatement = '';
 
+  // menyimpan value dari checkbox untuk memeriksa apakah zip yang diupload password protected
+  isZipPasswordProtected = false;
+
+  // model untuk menyimpan input password zip yang dimasukkan oleh user
+  zipPassword: string | undefined;
+
   constructor(private router: Router, private http: HttpClient) {}
 
   ngAfterViewInit() {
@@ -48,27 +54,43 @@ export class OcrBankPyComponent implements AfterViewInit {
 
         1 = BCA Corporate
         2 = BCA Personal
+        3 = BRI
        */
-      formData.append('bank-statement-type', this.selectedBankStatement);
 
-      this.http.post<any>(`${apiUrlPy}/proceed`, formData).subscribe({
-        next: (value) => {
-          Swal.close();
+      // Untuk bank BCA CORP ataupun BCA PERSONAL
+      if (
+        this.selectedBankStatement == '1' ||
+        this.selectedBankStatement == '2'
+      ) {
+        formData.append('bank-statement-type', this.selectedBankStatement);
 
-          this.router
-            .navigate(['/dashboard/ocr-bank-py-processed'], {
-              state: value,
-            })
-            .then();
-        },
-        error: (err) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Upload Failed',
-            text: err.error.data, // Bisa disesuaikan dengan pesan yang lebih jelas
-          });
-        },
-      });
+        if (this.isZipPasswordProtected) {
+          formData.append('zip-password', this.zipPassword!);
+        }
+
+        this.http.post<any>(`${apiUrlPy}/proceed-bca`, formData).subscribe({
+          next: (value) => {
+            Swal.close();
+
+            this.router
+              .navigate(['/dashboard/ocr-bank-py-processed'], {
+                state: value,
+              })
+              .then();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Upload Failed',
+              text:
+                err.error.data == undefined ? 'Unknown Error!' : err.error.data, // Bisa disesuaikan dengan pesan yang lebih jelas
+            });
+          },
+        });
+      }
+
+      if (this.selectedBankStatement == '3') {
+      }
 
       // this.http.get('assets/response_bca_personal.json').subscribe({
       //   next: value => {
